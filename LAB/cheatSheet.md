@@ -252,3 +252,28 @@ fscanf(fp, "%s %s %s %d", str1, str2, str3, &year);
 
 ### Linked Lists
 
+- They are `dynamic arrays` alternative. 
+- They are sequential access lists.
+- They are `not` stored in `contiguous location` in the memory.The elements are linked using pointers.
+- Have a series of connected Nodes.
+
+#### Types of Linked Lists
+
+1. Singly Linked List
+- Each `node` contains a single `pointer`, and that pointer points to next node.
+- Traversal of list in 1 direction only. 
+
+2. Doubly Linkd List
+- Each `node` contains two `pointers`, one that points to next node and the other to the previous one.
+- Traversal of list in 2 ways.
+- 2 pointers point towards `NULL`.
+
+3. Circular Linked List
+- Singly Linked List with last node's pointer to the first node in the list.
+- Traversal is infinite, it never ends.
+
+### Efficiency estimation
+
+#### Measuring Execution Time
+
+We use `gettimeofday()` from the `sys/time.h` library. 
