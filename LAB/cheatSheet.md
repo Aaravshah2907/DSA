@@ -277,3 +277,185 @@ fscanf(fp, "%s %s %s %d", str1, str2, str3, &year);
 #### Measuring Execution Time
 
 We use `gettimeofday()` from the `sys/time.h` library. 
+
+## Heap Space Measurement (Efficiency Estimation)
+
+The space-time tradeoff is a common theme while dealing with performance optimisation. Oftentimes, improving the performance of one comes at the cost of the other. 
+
+We would be using a simple technique where we would add a wrapper around our memory management functions (malloc() and free()).
+
+### Wrappers
+
+![Lab_3_Figure 1](assets/images/Lab3_Fig1.png "Memory Allocation to malloc(5)")
+
+Whenever this new version malloc() (say myalloc()) is called requesting a certain number of bytes (say n) of memory, myalloc() would now internally request (sizeof(int) + n) bytes of memory (using malloc()). 
+
+![Lab_3_Figure 2](assets/images/Lab3_Fig2.png "Memory Allocation to myalloc(5)")
+
+Subsequently, myalloc() would store the integer n at the beginning of the block and return the pointer starting from just after the integer holding the size. It would also update a global variable holding the total size allocated.
+
+In this way, the calling function sees no change in the returned pointer, but in memory the size information has been stored. So now when this pointer would be passed to wrapper version of free() (say myfree()), it would look for an integer stored just before the start of the block pointed to by the pointer (by decrementing the void pointer by sizeof(int) (ie 4 bytes) and dereferencing it as an int called size), decrement this integer size from the global variable maintaining the total allocated size, and then free the entire block including the integer.
+
+Sample Demonstartion is at [Sample Wrapper Code](Lab%203/SelfCodes/wrappers_memory.c).
+
+### Void Pointers
+
+Syntax for `malloc()`
+```c
+void *malloc(size_t size);
+```
+
+A `void pointer` is a pointer that has no associated data type. A void pointer can hold the address of any data type and can be typecasted to any other pointer type. However, since a void pointer does not know the size or type of the data it points to, **it cannot be dereferenced directly**. Therefore, a void pointer must be **explicitly cast to a specific pointer type** before dereferencing.
+
+For example, if an integer value is stored at the memory location pointed to by a void pointer ptr, it can be accessed as follows:
+```c
+*((int *)(ptr)) = 42;
+
+// Or
+
+int x = *((int *)(ptr));
+```
+
+#### Advantages
+
+- Primarily used to achieve **type-independent memory management**.
+- Used in **dynamic memory allocation function** such as malloc().
+- Used in **generic programming** and **generic data structures**(linkd list, stacks, queues).
+
+## Abstract Data Types (ADTs)
+
+- Theoretical specification of a data structure and its operations.
+- An ADT is defined by just its operations.
+- We will use header files to implement the ADTs in C.
+
+### Formal Defination
+
+An ADT is a mathematically specified entity that defines a set of its instances, with:
+1. A specific interface: This is a collection of signatures (or function declarations in C) of operations that can be invoked on an instance. This might be provided as an interface in Java or a header file in C.
+2. A set of axioms (pre-conditions and post-conditions) that define the semantics of the operations (i.e., what the operations do to instances of the ADT, but not how). These pre- and post-conditions would be typically expressed in some form of predicate logic expressions (don’t worry if you haven’t studied them).
+
+### Stack ADT
+
+- **Last in First Out (LIFO)** structure.
+- Insert & remove elements from the same end - **top** of a stack.
+
+- Inserting a new element is called **pushing** the element to the stack.
+- Removing an element is called **popping** the element of the stack.
+
+![Lab_3_Figure 3](assets/images/Lab3_Fig3.png "Illustrations of Stack Operations.")
+
+#### Common Application
+
+- When we want to provide the user the ability to undo the previous action.
+
+#### Behaviour (Interface)
+
+The following methods are implemented in the `Stack ADT`:
+- `Element top(Stack s)`: Get the last element
+- `Stack pop(Stack s)`: Remove the last element
+- `Stack push(Stack s, Element e)`: Add a new element
+- `Boolean isEmpty(Stack s)`: Find whether the list is empty
+- `Stack newStack()`: Creates a new Stack
+
+#### properties (Axioms) (for unbound Stack)
+
+The following axioms must hold for the implementation to ensure correctness:
+- `isEmpty(newStack()) == TRUE`
+- `isEmpty(push(s,e)) == FALSE`
+- `top(push(s,e)) == e`
+- `pop(push(s,e)) == s`
+
+#### Some Important Things to keep in mind
+
+##### Include Guard
+
+> We use an `include-guard` to prevent multiple inclusion from happening, thus avoiding compilation error. It is a standard good practice to follow.
+
+Syntax:
+```h
+#ifndef <token>
+#define <token>
+// header file contents..
+#endif
+```
+
+More Info at [Wiki-Link](https://en.wikipedia.org/wiki/Include_guard).
+
+##### Boolean Implementation
+
+```c
+#include <stdbool.h>
+//...
+bool isEmpty = true;
+```
+
+Or we can create the following header file as it is for direct implementation in our project.
+
+```h
+#ifndef BOOL_H
+#define BOOL_H
+
+typedef enum { false, true } bool;
+
+#endif
+```
+
+#### Implementation
+
+Can be done via [Linked Lists](#linked-lists) or [Arrays](#dynamically-allocated-arrays)
+
+> NOTE : PENDING NOTES?
+
+### Queue ADT
+
+- **First in First Out Principle (FIFO)**
+- Insertion & Deletion occurs at **different** ends
+- Insertion of new element is caleed **enqueue** operation which takes place at the rear of the queue.
+- Deletion of element is called **dequeue** operation which takes place at the front of the queue.
+
+![Illustrations of Queue Operations](assets/images/Lab3_Fig5.png "Illustrations of Queue Operations")
+
+#### Behaviour (Interface)
+
+The following methods are included in the Queue ADT:
+- Queue createQueue(): Create an empty queue
+- Queue enqueue(Queue q, Element o): Insert object o at the rear of the queue
+- Queue dequeue(Queue q): Remove the object from the front end of the queue; throw an error if queue is empty
+- Element front(Queue q): Return (and not remove) the element at the front end of the queue; throw an error if queue is empty
+- int size(Queue q): Return the number of elements in the queue
+- boolean empty(Queue q): Return TRUE if the queue is empty, FALSE otherwise
+
+#### Properties (Axioms)
+
+The following axioms must hold for the implementation to ensure correctness:
+- Front(Enqueue(createQueue(), v)) == v
+- Dequeue(Enqueue(createQueue(), v)) == createQueue()
+- Front(Enqueue(Enqueue(Q, w), v)) == Front(Enqueue(Q, w))
+- Dequeue(Enqueue(Enqueue(Q, w), v)) == Enqueue(Dequeue(Enqueue(Q, w)), v)
+
+#### Implementation
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
