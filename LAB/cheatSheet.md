@@ -435,27 +435,534 @@ The following axioms must hold for the implementation to ensure correctness:
 
 #### Implementation
 
+----------
+
+### Trade Off Between Space & Time
+
+- Asymptotic Lower bound for any `strictly comparison based sorting` is $\Omega(NlogN)$
+- What if we use `non-comparison methods`?
+    - We might be able to bypass the $\Omega(NlogN)$ criteria if we are able to use more space in a meaningful way.
 
 
+## Sorting Algorithms
+
+### Insertion Sort
+
+#### Insert In Order
+
+```c
+void insertionSort(int A[], int n)
+{
+    for(int j = 1; j < n; j++)
+    {
+        insertInOrder(A[j], A, j);
+    }
+}
+
+// Pre-condition: (length(A) - 1 > last) & forall j: 0 <= j < last - 1: A[j] <= A[j+1]
+void insertInOrder(int v, int A[], int last)
+{
+    int j = last - 1;
+    while(j >= 0 && v < A[j])
+    {
+        A[j+1] = A[j];
+        j--;
+    }
+    A[j+1] = v;
+}
+// Post-condition: forall j: 0 <= j <= last - 1: A[j] <= A[j+1]
+```
+
+Time Complexity: $\theta(n^{2})$
 
 
+### Merge Sort
+
+----
+
+### Quick Sort
+
+#### Time & Space Complexity
+
+Worst Case : T(n) = O(n^2)
+Average Case : T(n) = O(n log n)
+S(n) = O(log n)
+
+#### Strategy
+
+1. Divide
+    - Partition into 2 sub-arrays
+    - Compute the index of `pivot`
+2. Conquer
+    - Sort the 2 sub-arrays by recursive calls to QuickSort
+3. Combine
+    - This Algorithm does not need this step.
+
+#### Partitioning
+
+- Left part should have elements less than the pivot element
+- Right part should have elements moer than the pivot element.
+
+1. Hoare Partitioning
+    - While scanning elements from left to right, if we find an element that belongs to right part, their should also exist an element that belongs to left part.
+    - Code:
+    ```C
+    // Ls[lo..hi] is the input array; Ls[pInd] is the pivot
+    int part(int Ls[], int lo, int hi, int pInd){
+        swap(Ls, pInd, lo);
+        int pivPos, lt, rt, pv;
+        lt = lo + 1;
+        rt = hi;
+        pv = Ls[lo];
+        while (lt < rt){
+            for (; lt <= hi && Ls[lt] <= pv; lt++);
+            // Ls[j]<=pv for j in lo..lt-1
+            for (; Ls[rt] > pv; rt--);
+            // Ls[j]>pv for j in rt+1..hi
+            if (lt < rt){
+                swap(Ls, lt, rt);
+                lt++;
+                rt--;
+            }
+        }
+        if (Ls[lt] < pv && lt <= hi)
+            pivPos = lt;
+        else
+            pivPos = lt - 1;
+        swap(Ls, lo, pivPos);
+        // Postcond.: (Ls[j]<=pv for j in lo..pivPos-1) and (Ls[j]>pv for j in pivPos+1..hi)
+        return pivPos;
+    }
+    ```
+    - The above function partition the array into halves and returns the index of the pivot in the partitioned Array.
+
+2. Lomuto Partitioning
+    - A single pointer is used to iterate over the array from left to right. 
+    - Initially, the pivot is swapped with the element at the last location. 
+    - As the pointer moves from left to right, it keeps track of the correct position of the pivot based on the elements swept past till now and swaps any element that is less than or equal to the pivot to the left of the pivot position. 
+    - Once the pointer reaches the end of the array, the pivot is swapped with the element at the pivot position, effectively partitioning the array into two parts.
+    - Lomuto’s partitioning scheme uses two additional variables i and j and maintains the invariant (conditions).
+    - The variable j is incremented from 1 to n−1 using a for-loop.
+    - When A[j] is inspected, it is compared to the pivot p. 
+    - If it is smaller than the pivot, A[i] and A[j] are swapped, and i is incremented. 
+    - A[0 … i − 1] consists of elements smaller than p, A[i … j − 1] consists of elements at least as large as p; A[j … n − 2] has not been looked at and A[n-1] has the pivot.
+    - Code:
+    ```C
+    int lomuto_partition(struct person* arr, int low, int high) {
+        int pivot_height = arr[high].height;
+        int i = low - 1;
+        
+        for (int j = low; j < high; j++) {
+            if (arr[j].height <= pivot_height) {
+                i++;
+                // Swap arr[i] and arr[j]
+                struct person temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+        // Swap arr[i+1] and arr[high]
+        struct person temp = arr[i + 1];
+        arr[i + 1] = arr[high];
+        arr[high] = temp;
+        return i + 1;
+    }
+    ```
+
+3. Three-Way Partitioning
+    - Three-way partitioning is one where we create three partitions — less than the pivot, equal to the pivot and greater than the pivot.
+    - Code :
+    ```C
+    int threePart(int Ls[], int lo, int hi, int pInd){
+        swap(Ls, pInd, hi - 1);
+        int pivPos, lt, rt, mid, pv;
+        lt = lo;
+        rt = hi - 2;
+        mid = lo;
+        pv = Ls[hi - 1];
+        while (mid <= rt){
+            if (Ls[mid] < pv){
+                swap(Ls, lt, mid);
+                lt++;
+                mid++;
+            }
+            else if (Ls[mid] > pv){
+                swap(Ls, mid, rt);
+                rt--;
+            }
+            else{
+                mid++;
+            }
+        }
+        swap(Ls, mid, hi - 1);
+        return mid;
+    }
+    ```
+
+#### Pivot Selection
+- In the extreme case of unbalanced partitions (1 : n-1), we end up with a complexity of O(n2) for quicksort.
+
+1. Selecting first/last element
+    - Will work for a randomised array.
+    - Will `not` work for nearly sorted array. It will lead to O(n^2).
+
+2. Median-of-Three
+    - We take the median of first, last and middle element as pivot.
+    - It gives us O(n log n).
+    - Good method to be used.
+    ![Illustartion of Median-Of-Three](/LAB/assets/images/Lab6_Fig4.png)
+
+3. Median-of-Medians
+    - ‘Median-of-medians’ is one technique which can be used to find the kth smallest element in an array. 
+    - In the median of medians algorithm, we divide the input arrays first into groups of 5.
+    - Since 5 is a small constant number, for a given list of 5 integers, we can find the median of the list in O(1) time. 
+    - Now, we need to find the median of these n/5 medians which you can do by recursing into the list of n/5 elements.
+    - `O(n)` can be proved
+    - Code:
+    ```C
+    // L[] is the input array of length n
+    // kth smallest element is returned
+    int select(int L[], int n, int k){
+        if (k == 0)
+            return L[0];
+        if (n <= 5){
+            for (int i = 1; i < n; i++)
+                for (int j = i-1; j >= 0; j--)
+                    if (L[j] > L[j+1])
+                        swap(L, j, j+1);
+                    else
+                        break;
+            return L[k-1];
+        }
+        // partition L into subsets of five elements each (there will be n/5 subsets total).
+        int numGroups;
+        if (n % 5 == 0)
+            numGroups = n/5;
+        else
+            numGroups = n/5 + 1;
+        int medians[numGroups];
+        for (int i = 0; i < numGroups; i++){
+            medians[i] = select(L + i*5, min(5, n - i*5), min(5, n - i*5)/2);
+        }
+        int M = select(medians, numGroups, (numGroups+1)/2)
+        // Partition array into two halves, L1, {M} and L2, such that
+        // L1 contains elements <= M, {M} contains one instance of M and L2 contains all elements > M
+        int mInd;
+        for (int i = 0; i < n; i++){
+            if (L[i] == M){
+                mInd = i;
+                break;
+            }
+        }
+        int pInd = part(L, 0, n-1, mInd);
+        if (k <= pInd)
+            return select(L, pInd, k);
+        else if (k > pInd + 1)
+            return select(L + pInd + 1, n - pInd - 1, k - pInd - 1);
+        else
+            return L[pInd];
+    }
+    ```
+
+4. Quickselect
+    - Used to find the kth smallest element in an array.
+    - We recurse only in the range that may contain the required index.
+    - We get `O(n)` instead of `O(n log n)`
+    - Code:
+    ```C
+    // L[] is the input array of length n
+    // kth smallest element is returned
+    int qselect(int L[], int n, int k)
+    {
+        int pivot = 0;
+        int lo = 0;
+        int hi = n - 1;
+        int pInd = part(L, lo, hi, pivot);
+        if (k <= pInd)
+            return qselect(L, pInd, k);
+        else if (k > pInd + 1)
+            return qselect(L + pInd + 1, n - pInd - 1, k - pInd - 1);
+        else
+            return L[pInd];
+    }
+    ```
+
+5. Random Pivot
+    - We can take user Input between 2 numbers
+        - Code:
+        ```C
+            #include <stdio.h>
+            #include <stdlib.h>
+            #include <time.h>
+
+            int main(){
+                int a, b;
+                printf("Enter a and b: ");
+                scanf("%d %d", &a, &b);
+                srand(time(NULL));
+                int r = rand() % (b - a + 1) + a;
+                printf("Random number between %d and %d is %d\n", a, b, r);
+                return 0;
+            }
+        ```
+
+    - We can take current time and use it as a seed for random number generation.
+        - Code:
+        ```C
+        #include <stdio.h>
+        #include <stdlib.h>
+        #include <sys/time.h>
+
+        int randomPivot(int lo, int hi){
+            struct timeval tv;
+            gettimeofday(&tv, NULL);
+            srand(tv.tv_usec * 1000000 + tv.tv_sec);
+            return (rand() % (hi - lo)) + lo;
+        }
+
+        int main(){
+            int low = 0;
+            int high = 1000;
+            int randgen = randomPivot(low, high);
+            printf("Random number between %d and %d is %d\n", low, high, randgen);
+            return 0;
+        }
+        ```
+
+#### Putting all together
+
+    - We can take any combination of pivot selection snd partitioning techniques and get a inplemented version of quicksort.
+    - Genral Format : 
+```C
+    void qs(int Ls[], int lo, int hi){
+        if (lo < hi){
+            int p = pivot(Ls, lo, hi);
+            // Ls[p] is the pivot
+            p = part(Ls, lo, hi, p); // Ls[p] is the pivot
+            /*
+                (Ls[j]<=Ls[p] for j in lo..pPos-1) and
+                (Ls[j]>Ls[p] for j in pPos+1..hi)
+            */
+            qs(Ls, lo, p - 1);
+            qs(Ls, p + 1, hi);
+        }
+    }
+```
+
+### Hybrid Quick Sort
+For array size less than a fixed size, we prefer using Insertion Sort, for the rest of the code we use QuickSort.
+
+```C
+    void qsort_hybrid(int Ls[], int lo, int hi){
+        if (hi - lo < 10){
+            insertionsort(Ls, lo, hi);
+            return;
+        }
+        else if (lo < hi){
+            int p = pivot(Ls, lo, hi);
+            p = part(Ls, lo, hi, p);
+            qsort_hybrid(Ls, lo, p - 1);
+            qsort_hybrid(Ls, p + 1, hi);
+            }
+        }
+```
+
+### Counting Sort
+
+#### Introduction
+
+We know that each of the n input elements is an integer in the range `{0, 1, 2, …, k-1}`. In our algorithm, we first determine for each input element `x` the number of elements that are less than `x`. Given this information, we can then directly place the element `x` into its designated position in the output array.
+
+This is the basic premise of `counting sort` (or `“frequency sort”`). We count the number of elements that are there for each integer in the range (that is known to us). Then we use this count to directly place every element into its sorted position in the output array.
+
+#### Code Sample
+
+```C
+int* counting_sort(int* A, int* B, int k, int n){
+    // Initialize array C with all 0s
+    int C[k];
+    for (int i = 0; i < k; i++){
+        C[i] = 0;
+    }
+    // Count the number of times each element occurs in A and store it in C
+    for (int j = 0; j < n; j++){
+        C[A[j]]++;
+    }
+    // Place the elements of A in B in the correct position
+    // by computing the running sum
+    for (int i = 1; i < k; i++){
+        C[i] = C[i] + C[i - 1];
+    }
+    for (int j = n - 1; j >= 0; j--){
+        B[C[A[j]] - 1] = A[j];
+        C[A[j]]--;
+    }
+    return B;
+}
+```
+
+### Radix Sort
+
+- For key pair sorting algorithms.
+- The most important realisation with regard to the radix sort approach is that we can actually perform n-wise lexicographical comparisons based on the different digits of a number. In an n-digit number, the most-significant digit (leftmost) has the highest place value, followed by the second most-significant digit (second from left), and so on. This means we can perform some kind of lexicographical sorting on the digits of the number. This is what is known as “radix sort”. There are two distinct ways of performing this “lexicographical” (or radix) sorting on an array of integers.
+
+#### Straight Radix Sort
+
+Even though radix sort is a type of lexicographical sorting only, in the straight radix sort approach, we do something counter-intuitive — we start sorting from our least significant digit and move leftward. So, we start sorting from the rightmost digit and we must do so in a “stable” manner. Once we are done sorting one digit column, we move to the next digit column on the right and stably sort it, and so on.
+
+![Illustrating the straight Radix Sort Algorithm](/assets/images/Lab7_Fig3.png)
+
+##### Algorithm
+
+We may summarise the straight radix sort algorithm as follows:
+1. Take as input an array of ‘n’ integers.
+2. Find the maximum of those integers and count the number of digits in that maximum integer. Let this be ‘b’.
+3. For i = 1 to b, perform stable sorting on the keys based on their ith digit from the right.
+
+#### Radix Exchange Sort
+
+Suppose that the keys we need to sort are represented in binary. Then, as per the radix exchange sort algorithm, we examine the leftmost bit of the keys and sort the array with respect to the current leftmost bit. To perform this sorting, we do something very similar to the quick sort “partition” technique, and this is what is known here as “exchange”.
+
+To perform the exchange, we maintain two pointers, one scanning downwards from the top, and another scanning upwards from the bottom. We exchange the keys (note, entire keys and not just the bit) when our downward-moving pointer finds a 1 and our upward-moving pointer finds a 0. We stop scanning once our pointers coincide or cross.
+
+![Illustrating the “exchange” procedure in radix exchange sort](assets/images/lab7_Fig4.png)
+
+##### Algorithm
+
+The algorithm for radix exchange sort is summarised as follows:
+Note that we deal with the binary equivalent of the numbers in the input.
+1. Sort the array with respect to the leftmost bit by performing exchanges wherever a mismatch is found, in the manner described above.
+2. Partition the array after all required exchanges are performed.
+3. Recurse into the two partitions, with a mechanism to ignore the leftmost bits based on which the exchanges have been performed so far. Recursively perform the same operations till you have sorted (performed exchanges) based on the rightmost bit.
 
 
+The time complexity of radix exchange sort is also `O(bn)`, where `b` is the number of bits in the numbers being sorted, which is typically a constant. 
 
+>> Note that radix exchange sort is also sometimes referred to as “binary quick sort”.
 
+### Bucket Sort
 
+#### Simple Bucket Sort
 
+Suppose we know that the input consists of n integers in the range {1, 2, 3, …, m}. In that case, we shall create m buckets, one for each potential integer, in which we keep storing each of our n integers (the bucket can be implemented as a linked list). Thereafter, we can simply retrieve the elements back from the buckets in sequential order to obtain the sorted list. This takes O(m+n) time.
 
+![alt text](assets/images/Lab7_Fig5.png)
 
+#### Interval Bucket Sort
 
+It assumes that the input consists of n real numbers uniformly distributed (this is an assumption) over an interval [a, b). This variant of bucket sort divides the values into m equal-sized subintervals or “buckets”, which it maintains in sorted order, and then distributes the n input numbers into those buckets.
 
+![alt text](assets/images/Lab7_Fig7.png)
 
+##### Code
+```C
+void intervalSort(float arr[], int n){
+    int i, j;
+    
+    // Create n empty buckets
+    LIST b[n];
+    for(i=0; i<n; i++){
+        b[i] = createNewList();
+    }
 
+    // Put array elements in different buckets
+    for(i=0; i<n; i++){
+        insertFirst(b[(int)(n*arr[i])], createNewNode(arr[i]));
+    }
 
+    // Sort individual buckets
+    for(i=0; i<n; i++){
+        sortList(b[i]);
+    // sortList() function has to be implemented
+    }
 
+    // Concatenate all buckets (in sequence) into arr[]
+    for(i=0, j=0; i<n; i++){
+        NODE temp = b[i]->head;
+        while(temp != NULL){
+            arr[j++] = temp->ele;
+            temp = temp->next;
+        }
+    }
+}
+```
 
+## Recursion & Iteration
 
+### Recursion vs Iteration.
 
+It is a general rule of thumb that Recursion methods are generally slower than Iterative methods and that they occupy more space in the stack overhead then they ought to.
 
+Recursion (when naturally used):
+1. Tree Traversal: Used in file systems, HTML DOM parsing, and AI decision trees.
+2. Graph Depth-First Search (DFS): Used in Google Maps pathfinding, social network analysis, and circuit design.
+3.Backtracking Problems: Used in Sudoku solvers, N-Queens puzzle, and maze-solving algorithms.
 
+Iteration (when preferred):
+1. Loop-based calculations: Used in financial models, interest calculations, and payroll processing.
+2. Sorting (Insertion Sort, Bubble Sort): Used in databases for small-scale sorting operations.
+3. Graph Breadth-First Search (BFS): Used in network routing algorithms (e.g., shortest path in Google Maps).
 
+### Tail Recursive Algorithms
+
+We write recursive functions in which the recursive call made to the function is followed by an operation that is performed on its return value. Such functions are `non-tail recursive (NTR)` in the sense that the recursive call is not at the absolute tail-end of the function.
+
+Whereas, if a recursive function does have its recursive call occurring at the tail end of the function with no operation being performed after it, such a recursive function is `tail recursive (TR)`.
+
+In other words, the return from the recursive call is the `last operation` to be performed in this function. [The process of conversion from an NTR function to a TR function is an important concept and will be explained very thoroughly in the next section.]
+
+### Explicit Stack Usage
+
+The general process is:
+- Recursive calls get replaced by “push”
+    - depending on the details, may push new values, old values, or both
+- Returns from recursive calls get replaced by “pop”
+- The main calculation of the recursive routine gets put inside a loop
+    - at start of the loop, set variables from stack top and pop the stack
+
+### Locality Awareness
+
+The concept of spatial locality is that data accessed at some point in a program is situated next to data that is likely to be accessed in the near future. This concept becomes very important for us while designing our algorithms (solutions) to problems, because our computer architecture is usually such that data is `spatially cached` and `pre-fetched`. This means that while accessing data from a certain location in memory, our computers `prefetch the entire block` that the requested data belongs to and place the block in the cache.
+
+An algorithm which takes into account the concept of spatial locality to leverage the time boost that the memory hierarchy
+may consequently provide is known as a `spatial locality aware algorithm`. Whereas, an algorithm which does not, is known as a `non-spatial locality aware algorithm`.
+
+Spatial Locality Awareness (Cache Optimization)
+1. Database Indexing: Used in B-Trees for fast searching in MySQL, PostgreSQL, and file systems (NTFS, ext4).
+2. Operating Systems: Used in page replacement strategies (LRU caching), virtual memory, and disk caching.
+3. Machine Learning & AI: Used in matrix multiplication optimizations (TensorFlow, PyTorch),deep learning training, and image processing
+
+### Tail Recursive for Quick Sort
+
+```C
+    void qsort_iter_attempt1(int Ls[], int lo, int hi){
+        while (lo < hi){
+            int pInd = pivot(Ls, lo, hi);
+            int p = part(Ls, lo, hi, pInd);
+            qsort(Ls, lo, p - 1);
+            lo = p + 1;
+        }
+    }
+```
+
+### Tail Recursive for Quick Sort With Explicit Stack
+
+```C
+    void qs_iter_attemp2(int ls[], int lo, int hi){
+        Stack *s = newStack();
+        Element ele = {lo, hi};
+        push(s, ele);
+        while (!isEmpty(s)){
+            Element e = *top(s);
+            pop(s);
+            lo = e.lo;
+            hi = e.hi;
+            while (lo < hi){
+                int p = pivot(ls, lo, hi);
+                p = part(ls, lo, hi, p);
+                push(s, (Element){lo, p - 1});
+                lo = p + 1;
+            }
+        }
+    }
+```

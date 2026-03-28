@@ -1,1 +1,6 @@
+.DS_Store*.csv
+*.csv
+*.out
+ms_external
+sort_students
 .DS_Store

@@ -9,3 +9,17 @@
     - Queue ADT Implementation Notes
     - HomeWork Lab Sheets
 
+3. Lab 4
+    - Merge Sort Notes
+    - Extrnal Merge Sort Notes
+    - HomeWork Lab Sheets
+
+4. Lab 5
+    - HomeWork Lab Sheets
+
+5. Lab 6
+    - HomeWork Lab Sheets
+
+6. Lab 7
+    - Something ...
+    - HomeWork Lab Sheets
