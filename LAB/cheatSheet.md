@@ -437,6 +437,22 @@ The following axioms must hold for the implementation to ensure correctness:
 
 ----------
 
+### Dictionary ADT
+
+- Stores Key-Value Pair
+
+#### Behaviour
+
+The following methods are included in the Dictionary ADT:
+- `int size(Dictionary D)`: Returns the number of elements currently stored in the Dictionary.
+- `Boolean isEmpty(Dictionary D)`: Returns true when D is empty
+- `LIST elements(Dictionary D)`: Returns a list of all Elements stored in the Dictionary.
+- `Element *findElem(Dictionary D, key k)`: Returns an occurrence of an Element with key k stored in the dictionary.
+- `LIST findAllElem(Dictionary D, key k)`: Returns a list of all occurrences of Elements with key k stored in the Dictionary.
+- `insertItem(Dictionary D, key k, Element e)`: Inserts the Element e with key k.
+- `removeElem(Dictionary D, key k)`: Removes an Element with key k from the Dictionary.
+- `removeAllElem(Dictionary D, key k)`: Removes all Elements with key k from the Dictionary.
+
 ### Trade Off Between Space & Time
 
 - Asymptotic Lower bound for any `strictly comparison based sorting` is $\Omega(NlogN)$
@@ -966,3 +982,300 @@ Spatial Locality Awareness (Cache Optimization)
         }
     }
 ```
+
+## Hash Tables
+
+- They are used to quickly look up records based on keys.
+- Used in variety of ways:
+    - Cache lookups
+    - Case matching in switch statements
+
+### Common Families
+
+1. Direct Addressing
+    - Key Range $\in$ [0, m-1]
+    - Keys are distinct.
+    - We can set an array `T[0 ... m-1]`.
+        - `T[i] = x if x` $\in$ `T and key[x] = i`
+        - `T[i] = NULL` otherwise
+    - There is a `1-1` mapping between key & Index.
+    - Also known as `Perfect Hashing Function`.
+    - Size(Hash Table) = Key Range
+    - It takes `O(1)` to retrieve elements.
+    - A collision would occur when both keys are equal.
+    - Space Complexity is `O(r)`
+        r: size of range of values that can be taken
+    - Most of the time this leads to a waste of space.
+2. Division Method
+    - A key `k` is mapped into one of the `m` slots by taking the remainder `k\m`.
+        - `h(k) = k mod m`
+    - This is extremely fast, requiring only one Division operation.
+    - `m` $\neq 2^{p}$ and `m` $\neq 10^{p}$ to avoid overlaps due to collection by `Significant digits`
+    - Descent choices are `m` $\in$ {*`PRIME`*}
+3. Multiplication Method
+    - Works in 2 Steps.
+        - key `k` is multiplied by a constant A : A $\in$ (0,1)
+        - We take the fractional part as `kA mod 1`
+        - We multiply this by `m` and take the floor function of it.
+    - $h(k) = \lfloor m (kA mod 1) \rfloor$
+    - Advantage is that there is no restriction on the value of `m` here.
+    ![Illustratio of Multiplicative Hashing.](assets/images/Lab8_Fig2.png)
+    - The `w-bit` representation of the key `k` is multiplied by w-bit value. `s = A. 2^w`.
+    - Standard method is to choose A as the fractional part of `Golden Ratio` $A = \frac{\sqrt{5} - 1}{2} = 0.6180339887$
+
+    ```C
+    int mulHash(int key, int size){
+        double A = 0.6180339887;
+        double frac = key * A - (int)(key * A);
+        return (int)(size * frac);
+    }
+    ```
+
+4. Interpreting keys as Natural Numbers
+    - In cases when the key is $\notin \mathbb{N}$, we can do some mumbo-jumbo to make it $\in \mathbb{N}$.
+    - Example key=`'pt'`, then we can convert it into `(112,116)` and do some operation to create a large $\mathbb{Z}$ like `128^1 * 112 + 128^0 + 116 = 14452`, which can be used as `key` for our purposes.
+
+### Collision Resolution Techniques
+
+1. Open Addressing
+    - Alternative to `Handling Collisions`.
+    - All keys are stored directly in Hash Tables
+    - We systematically store collidind keys in other locations in a deterministic manner that makes it easy for same time lookup speeds.
+    - This order is called `Probe Sequence`.
+    - Instead of having a fixed probe sequence for all elements which would lead to the same slots being examined always for lookup (linear search in an array), the sequence depends on the key to be inserted. Thus the probe sequence is a function of the key k.
+    - Let the original hash function being used be `h'(k)` for the key `k`. This hash function can lead to collisions. So we define a `new hash function h(k,i)` that is a function of both the key `k` and the slot to be returned at the ith probe. In this context, we call `h'(k) as the auxiliary hash function` and the hash function h depends on `h'`.
+    - The look-up operation is also implemented differently in open addressing. In chaining, we could simply traverse up to the end of the linked list and see whether the element is present or not.
+    - However, in open addressing, we have to check the occupied elements of the probe sequence until we find either the required element, an empty slot or reach the end of the probe sequence (table completely filled, but element not found).
+    - We face a minor issue with implementing deletion from an open address hash table. When we delete an entry, we cannot simply mark that slot as empty. This would interfere with our lookup logic where we were stopping when we reach an empty slot. If we did we would be unable to retrieve any key for which we had probed this location and found it occupied during insertion.
+    - We solve this problem by `marking the slot` as `DELETED` instead of NIL/EMPTY. Now we can continue to keep probing until an empty slot during look-up, however, we can stop at the `DELETED` slot when we are trying to find an unoccupied slot for insertion.
+    - There are different ways of constructing h and consequently also the probe sequence.
+    i. Linear Probing
+        - ℎ(𝑘, 𝑖) = (ℎ′(𝑘) + 𝑖) 𝑚𝑜𝑑 𝑚 for i = 0, 1, 2, …, m-1
+        - Linear probing is easy to implement but suffers from a problem called `primary clustering`. There are long runs (clusters) of filled slots in the table leading to a large average search time.
+    ii. Quadratic Probing
+        - ℎ(𝑘, 𝑖) = (ℎ′(𝑘) + 𝑐1 . 𝑖 + 𝑐2 . 𝑖 2 ) 𝑚𝑜𝑑 𝑚
+            where h' is an auxiliary hash function, c1 and c2 are positive auxiliary constants, and i = 0; 1. …, m-1.
+        - Note that only some values of c1 and c2 may work to be able to access all slots for a given m. Also, two elements having the same initial hash value have the same probe sequence. This issue is called `secondary clustering`.
+    iii. Double Hashing
+        - ℎ(𝑘, 𝑖) = (ℎ1 (𝑘) + 𝑖. ℎ2 (𝑘)) 𝑚𝑜𝑑 𝑚
+        - ℎ1 (𝑘) = 𝑘 𝑚𝑜𝑑 𝑚
+        - ℎ2 (𝑘) = (𝑘 𝑚𝑜𝑑 (𝑚 − 1)) + 1
+        - The initial probe still goes to `T[h1(k)]`. However, now the successive probes are offset by the amount `h2(k) mod m`. The function h2(k) must be designed such that it is always relatively prime to the hash table for the entire table to be searched. One way is taking m to be a power 2 and h2 being an odd number.
+
+## Bloom Filters
+
+- They are probabilistic data structures that aim to optimise the time required to check whether an element is in a set.
+
+### Main Purpose 
+
+1. Insert an element into a set.
+2. Allow you to query whether an element is in a set.
+
+--------------------------------------------
+
+
+## AVL Trees
+
+### Rotation
+
+#### Left-Rotate
+
+```c
+struct​​ node​​ *rotate_left​( struct node *x){
+    struct node *y = x -> right;
+    x -> right = y->left;
+    y -> left = x;
+    return y;​
+}​
+```
+
+#### Right-Rotate
+
+```c
+struct node *rotate_right(struct node *x) {
+    struct node *y = x->left;
+    x->left = y->right;
+    y->right = x;
+    return y;
+}
+```
+
+### Insertion of Nodes
+
+#### Imbalances that may be caused
+1. LL Imbalance / RR Imbalance
+![LL Imbalance being solved by a single right Rotation.](assets/images/lab10_Fig4.png)
+
+2. LR Imbalance / RL Imbalance
+![LR Imbalance being solved by 2 Rotations](assets/images/Lab10_Fig5.png)
+
+#### Complete Insert Code
+```c
+struct node* insertAVL(struct node *node, int value){
+    if (node == NULL){
+        node = new_node(value);
+    }
+    else if (value < node->value){
+        node->left = insertAVL(node->left, value);
+    }
+    else{
+        node->right = insertAVL(node->right, value);
+    }
+
+    int balance = is_height_balanced(node);
+
+    if (balance == -1){ // imbalance detected
+        if (value < node->value){
+            if (value < node->left->value){
+                // LL imbalance
+                node = rotate_right(node);
+            }
+            else{
+                // LR imbalance
+                node->left = rotate_left(node->left);
+                node = rotate_right(node);
+            }
+        }
+        else{
+            if (value > node->right->value){
+                // RR imbalance
+                node = rotate_left(node);
+            }
+            else{
+                // RL imbalance
+                node->right = rotate_right(node->right);
+                node = rotate_left(node);
+            }
+        }
+    }
+
+    return node;
+}
+```
+
+## 2-4 Trees
+
+## Heap & HeapSort
+
+### Introduction to the Heap Data Structure
+
+Defined as a `nearly complete binary tree` that satisfies `Heap Property.`
+
+2 Kinds of Heap:
+    1. Max-Heaps
+    2. Min-Heaps
+
+Both of them satisfy: 
+
+#### Heap Property
+
+1. Max Heap Property : Key of a child node must be smaller than or equal to the node itself. Parent needs a key greater or equal to the node itself.
+
+2. Min Heap Property : Key of a child node must be greater than or equal to the node itself. Parent needs a key smaller or equal to the node itself.
+
+![Illustrating heaps and the heap property](/assets/images/Lab11_Fig1.png)
+
+> `NOTE` : We will only be using and referring to Binary Heaps
+
+### Implementation of Heaps
+
+We can use Graph data structure with nodes and stuff but, we will be using the simplest data structure possible - `Array`.
+
+Our Scheme for Array usage is:
+
+1. The root of the tree corresponds to the first element in the array (index = 0).
+2. The children of the root are found at the two positions after the double of the root’s index, i.e., the second and third elements (indices = 1 and 2, which are equal to 0*2+1 and 0*2+2 respectively) in the array are the children of the root.
+3. Inductively repeat the above for all nodes in the heap, ie., for all elements in the array, till the nodes in the heap are exhausted.
+
+![Demonstrating the mapping from tree to array](/assets/images/Lab11_Fig2.png)
+
+However, our implementation is not over just yet. Since a binary heap can have its lowest level partially filled (anywhere from 1 to $2^d$ nodes, where `d` is the depth of the tree), we must account for that in our array. We shall add an additional $2^d$ more space (for $2^d$ elements) to our array if a new level needs to be added to the tree at depth d. This will help our cause since repeated realloc calls will incur high time penalties (system calls are expensive; realloc is an encapsulated system call to the OS requesting for more memory), therefore we want to minimise our realloc calls while keeping the array size reasonable at any given instant. But what this means is that our array will have some garbage elements if the heap is not a complete binary tree.
+
+To keep track, we can define and maintain an integer - `Heap Size` that specifies te last index.
+
+STRUCT HEAP:
+
+```c
+struct heap {
+    int *data;
+    int size;
+    int capacity;
+    int depth;
+};
+
+typedef struct heap* Heap;
+```
+
+Create HEAP:
+
+```c
+Heap heap_create(){
+    Heap h = malloc(sizeof(struct heap));
+    h->data = malloc(sizeof(int));h->size = 0;
+    h->capacity = 1;
+    h->depth = 0;
+    return h;
+}
+```
+
+### Heapify
+
+To covert what is essentially still a Binary tree into a Heap structure, we need to implement `Heap Properties`, which will be done via `Heapify`.
+
+```c
+void max_heapify(Heap h, int index){
+    int left = left_child(h, index);
+    int right = right_child(h, index);
+    int largest = index;
+
+    if (left < h->size && h->data[left] > h->data[largest])
+        largest = left;
+
+    if (right < h->size && h->data[right] > h->data[largest])
+        largest = right;
+
+    if (largest != index){
+        int temp = h->data[index];
+        h->data[index] = h->data[largest];
+        h->data[largest] = temp;
+        max_heapify(h, largest);
+    }
+}
+```
+
+Worst Case T(n) : $O(log n)$ where n is the number of nodes in the heap.
+
+> NOTE : HEAPIFY DOESN'T BUILD A HEAP IN 1 GO. IT PREPARES A SUBTREE THAT SATISFIES THE HEAP PROPERTY ASSUMMING, IT'S CHILDREN DO.
+
+> NOTE : TO BUILD A HEAP FROM SCATCH, WE WILL NEED TO CALL HEAPIFY MULTIPLE TIMES IN A `BOTTOM-UP` FASHION
+
+### Heapsort
+
+Why use Heap Sort?
+    - Running Time is $O (n lg n)$ [Best Feature of Merge Sort]
+    - In-place Sorting occurs [Best Feature of Insertion Sort]
+
+What should the Heapsort Algorithm do?
+    - Build a max-heap out of  given elements.
+    - Iterations
+        - Element at top is the largest, so we movie it to the deserved location (end of heap) and reduce the size by 1
+        - Perform Heapify Again on the root of the heap and repeat proc till no element remains 
+
+```c
+void heap_sort(Heap h){
+    h = build_max_heap(h);
+    for (int i = h->size - 1; i >= 1; i--){
+        int temp = h->data[0];
+        h->data[0] = h->data[i];
+        h->data[i] = temp;
+        h->size = h->size - 1;
+        max_heapify(h, 0);
+    }
+}
+```
+
+![The working of heapsort. (a) The max-heap data structure just after build_max_heap. (b)–(j) The max-heap just after each call of max_heapify, showing the value of i at that time. Only lightly shaded nodes remain in the heap, the rest fall outside the “heapsize” (k). The resulting sorted array A.](assets/images/Lab11_Fig4.png)
+
+### Priority Queues
+
+
