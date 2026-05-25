@@ -1,5 +1,7 @@
+# Basics
 
 ## Comments
+
 ```cpp
 //       -->Single Line comments
 /* */ // -->Multiline Comments
@@ -7,8 +9,7 @@
 
 In `VS Code` to toggle comments for multiline use `⌘ + /`
 
-
-## Variables 
+## Variables
 
 ### Declaration & Initialization in Same line
 

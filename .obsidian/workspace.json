@@ -279,13 +279,23 @@
               "icon": "lucide-list",
               "title": "Outline of Basics"
             }
+          },
+          {
+            "id": "f813da137ce9e1db",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
+            }
           }
-        ]
+        ],
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -296,13 +306,14 @@
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
-      "terminal:Open terminal": false
+      "terminal:Open terminal": false,
+      "obsidian-git:Open Git source control": false
     }
   },
-  "active": "853ab4485e9a5e4c",
+  "active": "44a4c2a991e64550",
   "lastOpenFiles": [
-    "CPP_Notes/0000_Index.md",
     "CPP_Notes/Basics.md",
+    "CPP_Notes/0000_Index.md",
     "CPP_Notes/CheatSheet - CPP.md",
     "CPP_Notes/Introduction.md",
     "CPP_Notes/Data Types.md",
