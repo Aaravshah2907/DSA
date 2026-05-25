@@ -319,5 +319,106 @@ In C++, the term “side effect” has a different meaning: it is an observable 
 
 Since assignment has the observable effect of changing the value of an object, this is considered a side effect. We use certain operators (e.g. the assignment operator) primarily for their side effects (rather than the return value those operators produce). In such cases, the side effect is both beneficial and predictable (and it is the return value that is often incidental).
 
-## Functions & Files
+## Macros
 
+### include
+
+Used for `including` preprocessor files.
+
+### define
+
+Used for `creating` a macro.
+
+```cpp
+#define IDENTIFIER
+#define IDENTIFIER substitution_text
+```
+
+> _NOMENCLATURE_ : ALL CAPS FOR MACRO NAME. 
+
+### ifdef .. endif
+
+Like a if block, statements inside executed iff the macro is defined and not the value of Macro
+
+```cpp
+#include <iostream>
+
+#define PRINT_JOE
+
+int main()
+{
+#ifdef PRINT_JOE
+    std::cout << "Joe\n"; // will be compiled since PRINT_JOE is defined
+#endif
+
+#ifdef PRINT_BOB
+    std::cout << "Bob\n"; // will be excluded since PRINT_BOB is not defined
+#endif
+
+    return 0;
+}
+```
+
+### ifndef .. endif
+
+Like a if block, statements inside executed iff the macro is not defined and not the value of Macro.
+
+```cpp
+#include <iostream>
+
+int main()
+{
+#ifndef PRINT_BOB
+    std::cout << "Bob\n";
+#endif
+
+    return 0;
+}
+```
+
+### if 0 .. endif
+
+Never Executed. Useful in the case where we already have multiline comments and want the compiler to ignore more lines.
+
+```cpp
+#include <iostream>
+
+int main()
+{
+    std::cout << "Joe\n";
+
+#if 0 // Don't compile anything starting here
+    std::cout << "Bob\n";
+    std::cout << "Steve\n";
+#endif // until this point
+
+    return 0;
+}
+```
+
+### if 1 .. endif
+
+Always Executed.
+
+```cpp
+#include <iostream>
+
+int main()
+{
+    std::cout << "Joe\n";
+
+#if 1 // always true, so the following code will be compiled
+    std::cout << "Bob\n";
+    /* Some
+     * multi-line
+     * comment here
+     */
+    std::cout << "Steve\n";
+#endif
+
+    return 0;
+}
+```
+
+
+## Header Guards

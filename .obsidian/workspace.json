@@ -97,7 +97,7 @@
                 }
               }
             ],
-            "currentTab": 4
+            "currentTab": 3
           },
           {
             "id": "9c8f74546bbfcbfb",
@@ -144,7 +144,7 @@
                   },
                   "pinned": true,
                   "icon": "terminal",
-                  "title": "Terminal: aaravshah2975@Aarav-Macbook:~/Documents/Code/DSA/CPP_Notes"
+                  "title": "Terminal: aaravshah2975@Aarav-Macbook:~/Documents/Code/DSA"
                 }
               }
             ]
@@ -312,8 +312,8 @@
   },
   "active": "44a4c2a991e64550",
   "lastOpenFiles": [
-    "CPP_Notes/Basics.md",
     "CPP_Notes/0000_Index.md",
+    "CPP_Notes/Basics.md",
     "CPP_Notes/CheatSheet - CPP.md",
     "CPP_Notes/Introduction.md",
     "CPP_Notes/Data Types.md",
