@@ -18,10 +18,10 @@ In `VS Code` to toggle comments for multiline use `⌘ + /`
 
 int main()
 {
-	/*
-	type identifier { expression };
-	int x {2+3}; // Will evaluate perfectly;
-	*/
+ /*
+ type identifier { expression };
+ int x {2+3}; // Will evaluate perfectly;
+ */
     int width { 5 };    // define variable width and initialize with initial value 5
     std::cout << width; // prints 5
 
@@ -30,6 +30,7 @@ int main()
 ```
 
 ### Other Examples
+
 ```cpp
 int a;         // default-initialization (no initializer)
 
@@ -90,7 +91,6 @@ int main()
 Using `std::endl` is often inefficient, as it actually does two jobs: it outputs a newline (moving the cursor to the next line of the console), and it flushes the buffer (which is slow). If we output multiple lines of text ending with `std::endl`, we will get multiple flushes, which is slow and probably unnecessary.
 To output a newline without flushing the output buffer, we use `\n` (inside either single or double quotes), which is a special symbol that the compiler interprets as a newline character. `\n` moves the cursor to the next line of the console without causing a flush, so it will typically perform better. `\n` is also more concise to type and can be embedded into existing double-quoted text.
 
-
 ```cpp
 #include <iostream> // for std::cout
 
@@ -124,9 +124,9 @@ int main()
 
 int main()
 {
-	std::cout << sizeof(int) << '\n'; // print how many bytes of memory an int value takes
+ std::cout << sizeof(int) << '\n'; // print how many bytes of memory an int value takes
 
-	return 0;
+ return 0;
 }
 ```
 
@@ -243,8 +243,8 @@ If 2 Strings are next to each other without any seperator / new line seperator, 
 #include <iostream>
 
 int main(){
-	std::cout << "Hello "
-	     "world!"; // prints "Hello world!"
+ std::cout << "Hello "
+      "world!"; // prints "Hello world!"
 }
 ```
 
@@ -263,28 +263,28 @@ int main()
     std::cout << "This one is short\n";
     
     std::cout << 3 + 4
-			    + 5 + 6
-			    * 7 * 8; // Operator on next line.
-	
-	// Good Writing Practice
-	[[maybe_unused]] int cost          = 57;
-	[[maybe_unused]] int pricePerItem  = 24;
-	[[maybe_unused]] int value         = 5;
-	[[maybe_unused]] int numberOfItems = 17; 
-	
-	// Good Writing Practice
-	std::cout << "Hello world!\n";                  // cout lives in the iostream library
-	std::cout << "It is very nice to meet you!\n";  // these comments are easier to read
-	std::cout << "Yeah!\n";                         // especially when all lined up
-	
-	// cout lives in the iostream library
-	std::cout << "Hello world!\n";
-	
-	// these comments are easier to read
-	std::cout << "It is very nice to meet you!\n";
-	
-	// when separated by whitespace
-	std::cout << "Yeah!\n";
+       + 5 + 6
+       * 7 * 8; // Operator on next line.
+ 
+ // Good Writing Practice
+ [[maybe_unused]] int cost          = 57;
+ [[maybe_unused]] int pricePerItem  = 24;
+ [[maybe_unused]] int value         = 5;
+ [[maybe_unused]] int numberOfItems = 17; 
+ 
+ // Good Writing Practice
+ std::cout << "Hello world!\n";                  // cout lives in the iostream library
+ std::cout << "It is very nice to meet you!\n";  // these comments are easier to read
+ std::cout << "Yeah!\n";                         // especially when all lined up
+ 
+ // cout lives in the iostream library
+ std::cout << "Hello world!\n";
+ 
+ // these comments are easier to read
+ std::cout << "It is very nice to meet you!\n";
+ 
+ // when separated by whitespace
+ std::cout << "Yeah!\n";
 }
 ```
 
@@ -315,6 +315,7 @@ Note that some operators have more than one meaning depending on how they are us
 We’ll talk more about the order in which operators execute when we do a deep dive into the topic of operators. For now, it’s enough to know that the arithmetic operators execute in the same order as they do in standard mathematics: `Parenthesis first, then Exponents, then Multiplication & Division, then Addition & Subtraction`. This ordering is sometimes abbreviated _PEMDAS_, or expanded to the mnemonic “Please Excuse My Dear Aunt Sally”.
 
 ### Return Values & 'Side Effects'
+
 In C++, the term “side effect” has a different meaning: it is an observable effect of an operator or function beyond producing a return value.
 
 Since assignment has the observable effect of changing the value of an object, this is considered a side effect. We use certain operators (e.g. the assignment operator) primarily for their side effects (rather than the return value those operators produce). In such cases, the side effect is both beneficial and predictable (and it is the return value that is often incidental).
@@ -334,7 +335,7 @@ Used for `creating` a macro.
 #define IDENTIFIER substitution_text
 ```
 
-> _NOMENCLATURE_ : ALL CAPS FOR MACRO NAME. 
+> _NOMENCLATURE_ : ALL CAPS FOR MACRO NAME.
 
 ### ifdef .. endif
 
@@ -419,6 +420,5 @@ int main()
     return 0;
 }
 ```
-
 
 ## Header Guards

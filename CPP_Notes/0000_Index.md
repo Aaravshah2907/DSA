@@ -6,10 +6,13 @@
 | 0     | [[CPP_NOTES/Introduction \| Introduction]] |
 | 1     | [[CPP_Notes/Basics\|Basics]]               |
 | 2     | [[Maths \| Math Topics]]                   |
-Current Chapter : 2.11 - Header Files
-Link : <a href="https://www.learncpp.com/cpp-tutorial/header-files/">LearnCPP</a>
 
-# Pending Topics
+Current Chapter : 2.11 - Header Files
+
+Link : [LearnCPP](https://www.learncpp.com/cpp-tutorial/header-files/)
+
+## Pending Topics
+
 - [ ] Function / Files
 - [ ] Debugging
 - [ ] Fundamental Data Types
@@ -40,4 +43,3 @@ Link : <a href="https://www.learncpp.com/cpp-tutorial/header-files/">LearnCPP</a
 - [ ] File I/O
 - [ ] Misc. Subjects
 - [ ] STL (Appendix D)
-- [ ] 
