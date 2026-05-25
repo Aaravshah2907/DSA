@@ -1,3 +1,6 @@
 [
-  "code-styler"
+  "code-styler",
+  "terminal",
+  "code-emitter",
+  "obsidian-plugin-toc"
 ]

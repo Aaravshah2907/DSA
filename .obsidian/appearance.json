@@ -1,1 +1,9 @@
-{}
+{
+  "accentColor": "",
+  "cssTheme": "Blue Topaz",
+  "baseFontSize": 16,
+  "translucency": true,
+  "interfaceFontFamily": "FiraCode Nerd Font Mono,FiraCode Nerd Font Propo",
+  "monospaceFontFamily": "FiraCode Nerd Font Mono",
+  "textFontFamily": "FiraCode Nerd Font"
+}

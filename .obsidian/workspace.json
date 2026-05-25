@@ -4,65 +4,153 @@
     "type": "split",
     "children": [
       {
-        "id": "c586baeb566bd5c0",
-        "type": "tabs",
+        "id": "5ef318f5187f0837",
+        "type": "split",
         "children": [
           {
-            "id": "12d23e6ad3487cbf",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Template/DSA_NOTES.md",
-                "mode": "source",
-                "source": false
+            "id": "c586baeb566bd5c0",
+            "type": "tabs",
+            "dimension": 81.3780260707635,
+            "children": [
+              {
+                "id": "12d23e6ad3487cbf",
+                "type": "leaf",
+                "state": {
+                  "type": "markdown",
+                  "state": {
+                    "file": "CPP_Notes/Maths.md",
+                    "mode": "source",
+                    "source": false
+                  },
+                  "icon": "lucide-file",
+                  "title": "Maths"
+                }
               },
-              "icon": "lucide-file",
-              "title": "DSA_NOTES"
-            }
+              {
+                "id": "f807c89ade272524",
+                "type": "leaf",
+                "state": {
+                  "type": "markdown",
+                  "state": {
+                    "file": "CPP_Notes/Introduction.md",
+                    "mode": "source",
+                    "source": false
+                  },
+                  "icon": "lucide-file",
+                  "title": "Introduction"
+                }
+              },
+              {
+                "id": "d13be4bd800084a7",
+                "type": "leaf",
+                "state": {
+                  "type": "markdown",
+                  "state": {
+                    "file": "CPP_Notes/Data Types.md",
+                    "mode": "source",
+                    "source": false
+                  },
+                  "icon": "lucide-file",
+                  "title": "Data Types"
+                }
+              },
+              {
+                "id": "47f3f749d55d944a",
+                "type": "leaf",
+                "state": {
+                  "type": "markdown",
+                  "state": {
+                    "file": "CPP_Notes/0000_Index.md",
+                    "mode": "source",
+                    "source": false
+                  },
+                  "icon": "lucide-file",
+                  "title": "0000_Index"
+                }
+              },
+              {
+                "id": "853ab4485e9a5e4c",
+                "type": "leaf",
+                "state": {
+                  "type": "markdown",
+                  "state": {
+                    "file": "CPP_Notes/Basics.md",
+                    "mode": "source",
+                    "source": false
+                  },
+                  "icon": "lucide-file",
+                  "title": "Basics"
+                }
+              },
+              {
+                "id": "8a4bfff664a63a92",
+                "type": "leaf",
+                "state": {
+                  "type": "markdown",
+                  "state": {
+                    "file": "CPP_Notes/CheatSheet - CPP.md",
+                    "mode": "source",
+                    "source": false
+                  },
+                  "icon": "lucide-file",
+                  "title": "CheatSheet - CPP"
+                }
+              }
+            ],
+            "currentTab": 4
           },
           {
-            "id": "f564f58e90e9ca6c",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Learning/Sorting.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Sorting"
-            }
-          },
-          {
-            "id": "f70bcaf93c8277ac",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Learning/Basics.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Basics"
-            }
-          },
-          {
-            "id": "67bd4533ddf0ca00",
-            "type": "leaf",
-            "state": {
-              "type": "release-notes",
-              "state": {
-                "currentVersion": "1.8.9"
-              },
-              "icon": "lucide-book-up",
-              "title": "Release Notes 1.8.9"
-            }
+            "id": "9c8f74546bbfcbfb",
+            "type": "tabs",
+            "dimension": 18.6219739292365,
+            "children": [
+              {
+                "id": "44a4c2a991e64550",
+                "type": "leaf",
+                "pinned": true,
+                "state": {
+                  "type": "terminal:terminal",
+                  "state": {
+                    "terminal:terminal": {
+                      "cwd": "/Users/aaravshah2975/Documents/Code/DSA",
+                      "focus": false,
+                      "profile": {
+                        "args": [
+                          "--login"
+                        ],
+                        "executable": "/bin/zsh",
+                        "followTheme": true,
+                        "name": "",
+                        "platforms": {
+                          "darwin": true
+                        },
+                        "pythonExecutable": "python3",
+                        "restoreHistory": false,
+                        "rightClickAction": "copyPaste",
+                        "successExitCodes": [
+                          "0",
+                          "SIGINT",
+                          "SIGTERM"
+                        ],
+                        "terminalOptions": {
+                          "documentOverride": null
+                        },
+                        "type": "integrated",
+                        "useWin32Conhost": true
+                      },
+                      "profileSourceId": "darwinIntegratedDefault",
+                      "serial": null
+                    }
+                  },
+                  "pinned": true,
+                  "icon": "terminal",
+                  "title": "Terminal: aaravshah2975@Aarav-Macbook:~/Documents/Code/DSA/CPP_Notes"
+                }
+              }
+            ]
           }
         ],
-        "currentTab": 3
+        "direction": "horizontal"
       }
     ],
     "direction": "vertical"
@@ -119,7 +207,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 222.5
   },
   "right": {
     "id": "548e6462b4756936",
@@ -201,21 +289,48 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "bases:Create new base": false,
       "switcher:Open quick switcher": false,
       "graph:Open graph view": false,
       "canvas:Create new canvas": false,
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
-      "command-palette:Open command palette": false
+      "command-palette:Open command palette": false,
+      "terminal:Open terminal": false
     }
   },
-  "active": "67bd4533ddf0ca00",
+  "active": "853ab4485e9a5e4c",
   "lastOpenFiles": [
+    "CPP_Notes/0000_Index.md",
+    "CPP_Notes/Basics.md",
+    "CPP_Notes/CheatSheet - CPP.md",
+    "CPP_Notes/Introduction.md",
+    "CPP_Notes/Data Types.md",
+    "CPP_Notes/out",
+    "CPP_Notes/Maths.md",
+    "CheatSheet - CPP.md",
+    "CPP_Notes/temp.cpp",
+    "Template/DSA_NOTES.md",
+    "Striver/Arrays/Basic/Multi-base Palindromic Check.md",
+    "CPP_Notes",
+    "Template/Leetcode_Question_{{date}}.md",
+    "Striver/Arrays/Basic/Interior Points of a Circle via query.md",
+    "Striver/Arrays/Basic/Reverse Polish Notation.md",
+    "Striver/Arrays/Basic/Stirling's Number.md",
+    "Striver/Arrays/Basic/Modified Binary Search for Rotated Array.md",
+    "Striver/Arrays/Basic/Factorial Lehmar Code.md",
+    "Striver/Arrays/Basic/7. Search in a sorted 2D matrix.md",
+    "Striver/Arrays/Basic/6. Find the number that appears once, and the other numbers twice.md",
+    "Striver/Arrays/Basic/5. Left Rotate by K Places.md",
+    "Striver/Arrays/Basic/4. Left Rotate Array.md",
+    "Striver/Arrays/Basic/3. Second Largest Element.md",
+    "Striver/Arrays/Basic/2. Check If Sorted.md",
+    "Striver/Arrays/Basic/1. Largest Element.md",
     "Learning/Sorting.md",
     "Learning/Basics.md",
-    "Template/DSA_NOTES.md",
+    "Striver/Arrays/Basic",
+    "Striver/Arrays",
     "SORTING.md",
-    "Learning/SORTING.md",
-    "Template/Leetcode_Question_{{date}}.md"
+    "Learning/SORTING.md"
   ]
 }

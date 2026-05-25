@@ -1,18 +1,20 @@
 ---
-tags: 
+tags:
 title: "{{title}}"
 author: Aarav Shah
-status: 
+status:
 date: "{{date}}"
 time: "{{time}}"
+Space Compl.:
+Time Compl.:
 ---
 
 -----
-### Sub-Topic 1
+### Optimal Solution
 ###### Description
 
 ---
-```Python
+```cpp
 
 ```
 ---
